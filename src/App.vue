@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-
     <games-listing :games="games"></games-listing>
   </div>
 </template>

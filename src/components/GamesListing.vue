@@ -39,21 +39,10 @@ export default {
       currentWeekIndex: 0,
       gameWeek: {}
     };
-  },
-
-  mounted() {
-    this.test();
-  },
-
-  methods: {
-    test() {
-
-    }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .games-listing {
     max-width: 800px;

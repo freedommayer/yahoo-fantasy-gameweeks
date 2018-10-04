@@ -1,4 +1,4 @@
-# nhl-games
+# Yahoo fantasy gameweeks
 
 ## Project setup
 ```
