@@ -3,25 +3,15 @@
     <div class="games-listing__filters">
       <select v-model="currentWeekIndex">
         <option
-          v-for="(gameWeek, index) in games.gameWeeks"
+          v-for="(gameWeek, index) in schedule.gameWeeks"
           v-text="'Game week ' + (index + 1)"
           :value="index">
         </option>
       </select>
     </div>
 
-    <div v-for="(gameWeek, index) in games.gameWeeks" v-if="currentWeekIndex === index" class="games-listing__week">
-      <div v-for="(day, date) in gameWeek" class="games-listing__day">
-        <div class="games-listing__label">
-          {{ date }}
-        </div>
-
-        <div class="games-listing__teams">
-          <div v-for="team in day" class="games-listing__team">
-            <img class="games-listing__logo" :src="team.logo" :alt="team.city"/>
-          </div>
-        </div>
-      </div>
+    <div class="games-listing__week">
+      <img v-for="team in orderedTeams" class="games-listing__logo" :src="team.logo" :alt="team.city"/>
     </div>
   </div>
 </template>
@@ -31,14 +21,49 @@ export default {
   name: 'GamesListing',
 
   props: {
-    games: { type: Object, required: true }
+    schedule: { type: Object, required: true }
   },
 
   data() {
     return {
       currentWeekIndex: 0,
-      gameWeek: {}
+      orderedTeams: {}
     };
+  },
+
+  watch: {
+    currentWeekIndex(index) {
+      let currentGameWeek = this.schedule.gameWeeks[index];
+      this.orderedTeams = this.formatGameWeek(currentGameWeek);
+    }
+  },
+
+  mounted() {
+    this.orderedTeams = this.formatGameWeek(this.schedule.gameWeeks[0]);
+  },
+
+  methods: {
+    formatGameWeek(gameWeek) {
+      let orderedTeams = [];
+
+      for (let day in gameWeek) {
+        let teams = gameWeek[day];
+
+        for (let team in teams) {
+          orderedTeams.push(teams[team]);
+        }
+      }
+
+      return orderedTeams.sort(this.compareByCityName);
+    },
+
+    compareByCityName(a,b) {
+      if (a.city < b.city)
+        return -1;
+      if (a.city > b.city)
+        return 1;
+      return 0;
+    }
   }
 }
 </script>

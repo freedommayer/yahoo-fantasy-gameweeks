@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <games-listing :games="games"></games-listing>
+    <games-listing :schedule="schedule"></games-listing>
   </div>
 </template>
 
@@ -17,12 +17,12 @@ export default {
 
   data() {
     return {
-      games: ScheduleByGameWeeks
+      schedule: ScheduleByGameWeeks
     };
   }
 }
 </script>
-
+ 
 <style>
   * {
     box-sizing: border-box;
