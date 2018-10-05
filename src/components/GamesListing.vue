@@ -11,12 +11,22 @@
     </div>
 
     <div class="games-listing__week">
-      <img v-for="team in orderedTeams" class="games-listing__logo" :src="team.logo" :alt="team.city"/>
+      <div v-for="team in orderedTeams" class="games-listing__team">
+        ({{ team.length }})
+
+        <img
+          v-for="game in team"
+          :src="game.logo"
+          :alt="game.city"
+          class="games-listing__team-logo"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { groupBy, sortBy } from 'underscore';
+
 export default {
   name: 'GamesListing',
 
@@ -33,8 +43,7 @@ export default {
 
   watch: {
     currentWeekIndex(index) {
-      let currentGameWeek = this.schedule.gameWeeks[index];
-      this.orderedTeams = this.formatGameWeek(currentGameWeek);
+      this.orderedTeams = this.formatGameWeek(this.schedule.gameWeeks[index]);
     }
   },
 
@@ -44,38 +53,33 @@ export default {
 
   methods: {
     formatGameWeek(gameWeek) {
-      let orderedTeams = [];
+      let allTeams = [],
+          groupedTeams = [];
 
       for (let day in gameWeek) {
         let teams = gameWeek[day];
 
         for (let team in teams) {
-          orderedTeams.push(teams[team]);
+          allTeams.push(teams[team]);
         }
       }
 
-      return orderedTeams.sort(this.compareByCityName);
-    },
+      groupedTeams = groupBy(allTeams, 'city');
 
-    compareByCityName(a,b) {
-      if (a.city < b.city)
-        return -1;
-      if (a.city > b.city)
-        return 1;
-      return 0;
+      return sortBy(groupedTeams, 'length').reverse();
     }
   }
 }
 </script>
 
 <style scoped>
-  .games-listing {
-    max-width: 800px;
-    margin: 0 auto;
+  .games-listing__filters {
+    margin-bottom: 25px;
   }
 
   .games-listing__week {
-    border: 10px solid green;
+    display: flex;
+    flex-direction: column;
   }
 
   .games-listing__day {
@@ -86,12 +90,20 @@ export default {
     font-weight: 700;
   }
 
-  .games-listing__teams {
+  .games-listing__team {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
-  .games-listing__logo {
+  .games-listing__team-logo {
     width: 40px;
+    margin: 0 5px;
   }
 </style>

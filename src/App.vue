@@ -1,6 +1,10 @@
 <template>
-  <div id="app">
-    <games-listing :schedule="schedule"></games-listing>
+  <div id="app" class="content">
+    <div class="content__wrapper">
+      <h1>Games By Team</h1>
+
+      <games-listing :schedule="schedule"></games-listing>
+    </div>
   </div>
 </template>
 
@@ -38,5 +42,10 @@ export default {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  .content__wrapper {
+    max-width: 800px;
+    margin: 0 auto;
   }
 </style>
